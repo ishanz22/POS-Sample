@@ -5,11 +5,6 @@ import lk.ijse.pos.model.Orders;
 
 import java.util.ArrayList;
 
-*/
-/**
- * @author : Sanu Vithanage
- * @since : 0.1.0
- **//*
 
 public class OrderDAOImpl {
 
@@ -34,4 +29,5 @@ public class OrderDAOImpl {
     }
 
 }
+
 */
