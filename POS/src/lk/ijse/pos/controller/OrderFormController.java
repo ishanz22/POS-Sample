@@ -165,8 +165,8 @@ public class OrderFormController implements Initializable {
                         int qtyOnHand = item.getQtyOnHand();
 
                         txtDescription.setText(description);
-                        txtUnitPrice.setText(unitPrice + "");
-                        txtQtyOnHand.setText(qtyOnHand + "");
+                        txtUnitPrice.setText( qtyOnHand+ "");
+                        txtQtyOnHand.setText(unitPrice + "");
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(OrderFormController.class.getName()).log(Level.SEVERE, null, ex);
@@ -324,7 +324,7 @@ public class OrderFormController implements Initializable {
             OrderDAOImpl orderDAO = new OrderDAOImpl();
             Orders orders = new Orders(txtOrderID.getText(),parseDate(txtOrderDate.getEditor().getText()),cmbCustomerID.getSelectionModel().getSelectedItem());
             boolean b1 = orderDAO.addOrder(orders);
-
+            System.out.println("Order State :"+b1);
             if (!b1) {
                 connection.rollback();
                 return;
@@ -332,31 +332,32 @@ public class OrderFormController implements Initializable {
 
             /*Add Order Details to the Table*/
             OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
-            for (OrderDetailTM orderDetail : olOrderDetails) {
+            for (OrderDetailTM orderDetailTM : olOrderDetails) {
 
                 OrderDetails orderDetails = new OrderDetails(
                         txtOrderID.getText(),
-                        orderDetail.getItemCode(),
-                        orderDetail.getQty(),
-                        new BigDecimal(orderDetail.getUnitPrice()));
+                        orderDetailTM.getItemCode(),
+                        orderDetailTM.getQty(),
+                        new BigDecimal(orderDetailTM.getUnitPrice()));
 
                 boolean b2 = orderDetailsDAO.addOrderDetails(orderDetails);
-
+                System.out.println("Order Details State :"+b2);
                 if (!b2) {
                     connection.rollback();
                     return;
                 }
-                int qtyOnHand = 0;
 
+                int qtyOnHand = 0;
                 ItemDAOImpl itemDAO = new ItemDAOImpl();
-                Item item = itemDAO.searchItem(orderDetail.getItemCode());
+                Item item = itemDAO.searchItem(orderDetailTM.getItemCode());
 
                 if (item!=null) {
                     qtyOnHand = item.getQtyOnHand();
                 }
-                ItemDAOImpl itemDAO1 = new ItemDAOImpl();
-                boolean b = itemDAO1.updateItemQtyOnHand(orderDetail.getItemCode(), orderDetail.getQty());
 
+                ItemDAOImpl itemDAO1 = new ItemDAOImpl();
+                boolean b = itemDAO1.updateItemQtyOnHand(orderDetailTM.getItemCode(),qtyOnHand-orderDetailTM.getQty());
+                System.out.println("Item Qty Update State :"+b);
                 if (!b) {
                     connection.rollback();
                     return;
