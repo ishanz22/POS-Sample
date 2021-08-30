@@ -91,6 +91,8 @@ public class OrderFormController implements Initializable {
 
     ItemDAO itemDAO = new ItemDAOImpl();
     CustomerDAO customerDAO = new CustomerDAOImpl();
+    OrderDAO orderDAO = new OrderDAOImpl();
+    OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
 
 
 
@@ -139,7 +141,7 @@ public class OrderFormController implements Initializable {
 
                 try {
 //                    CustomerDAOImpl dao = new CustomerDAOImpl();
-                 Customer customer = customerDAO.searchCustomer(customerID);
+                    Customer customer = customerDAO.searchCustomer(customerID);
 
                     if (customer != null) {
                         txtCustomerName.setText(customer.getName());
@@ -333,7 +335,7 @@ public class OrderFormController implements Initializable {
             connection.setAutoCommit(false);
 
             /*Add Order Record*/
-            OrderDAO orderDAO = new OrderDAOImpl();
+            // OrderDAO orderDAO = new OrderDAOImpl();
             Orders orders = new Orders(txtOrderID.getText(), parseDate(txtOrderDate.getEditor().getText()), cmbCustomerID.getSelectionModel().getSelectedItem());
             boolean b1 = orderDAO.addOrder(orders);
             System.out.println("Order State :" + b1);
@@ -343,7 +345,7 @@ public class OrderFormController implements Initializable {
             }
 
             /*Add Order Details to the Table*/
-            OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
+//            OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
             for (OrderDetailTM orderDetailTM : olOrderDetails) {
 
                 OrderDetails orderDetails = new OrderDetails(
