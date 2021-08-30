@@ -1,5 +1,6 @@
-package lk.ijse.pos.dao;
+package lk.ijse.pos.dao.impl;
 
+import lk.ijse.pos.dao.OrderDAO;
 import lk.ijse.pos.db.DBConnection;
 import lk.ijse.pos.model.Orders;
 
@@ -12,10 +13,14 @@ import java.util.ArrayList;
  * @since : 0.1.0
  **/
 
-public class OrderDAOImpl {
+public class OrderDAOImpl implements OrderDAO {
+    Connection connection = DBConnection.getInstance().getConnection();
+
+    public OrderDAOImpl() throws Exception {
+    }
 
     public boolean addOrder(Orders orders) throws Exception {
-        Connection connection = DBConnection.getInstance().getConnection();
+//        Connection connection = DBConnection.getInstance().getConnection();
         String sql = "INSERT INTO Orders VALUES (?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, orders.getId());
