@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.pos.AppInitializer;
+import lk.ijse.pos.BO.CustomerBOImpl;
 import lk.ijse.pos.dao.CustomerDAO;
 import lk.ijse.pos.dao.impl.CustomerDAOImpl;
 import lk.ijse.pos.model.Customer;
@@ -47,18 +48,14 @@ public class ManageCustomerFormController implements Initializable {
     @FXML
     private TableView<CustomerTM> tblCustomers;
 
-
-    CustomerDAO customerDAO = new CustomerDAOImpl();
-
-    public ManageCustomerFormController() throws Exception {
-    }
+    CustomerBOImpl customerBO = new CustomerBOImpl();
 
 
     private void loadAllCustomers() {
         try {
             /*  get all customers*/
 //            CustomerDAO customerDAO = new CustomerDAOImpl();
-            ArrayList<Customer> allCustomers = customerDAO.getAll();
+            ArrayList<Customer> allCustomers = customerBO.getAllCustomers();
             ArrayList<CustomerTM> allCustomersForTable = new ArrayList<>();
 
             for (Customer customer : allCustomers) {
@@ -124,7 +121,7 @@ public class ManageCustomerFormController implements Initializable {
             try {
                 /*Delete operation*/
 //                CustomerDAO customerDAO = new CustomerDAOImpl();
-                boolean b = customerDAO.delete(customerID);
+                boolean b = customerBO.deleteCustomer(customerID);
 
                 if (b) {
                     loadAllCustomers();
@@ -161,7 +158,7 @@ public class ManageCustomerFormController implements Initializable {
             try {
                 /* Add Operation*/
 //                CustomerDAO dao = new CustomerDAOImpl();
-                boolean b = customerDAO.add(new Customer(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
+                boolean b = customerBO.AddCustomer(new Customer(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
                 if (b) {
                     loadAllCustomers();
                 } else {
@@ -175,7 +172,7 @@ public class ManageCustomerFormController implements Initializable {
             try {
                 //Update Operation
 //                CustomerDAO dao = new CustomerDAOImpl();
-                boolean b = customerDAO.update(new Customer(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
+                boolean b = customerBO.updateCustomer(new Customer(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
                 if (b) {
                     loadAllCustomers();
                 } else {
