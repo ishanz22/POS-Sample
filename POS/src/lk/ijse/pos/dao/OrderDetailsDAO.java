@@ -2,7 +2,6 @@ package lk.ijse.pos.dao;
 
 import lk.ijse.pos.model.OrderDetails;
 
-public interface OrderDetailsDAO {
+public interface OrderDetailsDAO extends SuperDAO{
 
-    public boolean addOrderDetails(OrderDetails orderDetails) throws Exception;
 }

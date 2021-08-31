@@ -4,9 +4,8 @@ import lk.ijse.pos.model.Orders;
 
 import java.util.ArrayList;
 
-public interface OrderDAO {
+public interface OrderDAO extends SuperDAO<Orders,String> {
 
-    public boolean addOrder(Orders orders) throws Exception;
 
 //    public boolean updateOrder(Orders orders);
 //

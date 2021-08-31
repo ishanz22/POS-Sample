@@ -17,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.pos.AppInitializer;
 import lk.ijse.pos.dao.CustomerDAO;
+import lk.ijse.pos.dao.impl.CustomerDAOImpl;
 import lk.ijse.pos.model.Customer;
 import lk.ijse.pos.view.tblmodel.CustomerTM;
 
@@ -57,7 +58,7 @@ public class ManageCustomerFormController implements Initializable {
         try {
             /*  get all customers*/
 //            CustomerDAO customerDAO = new CustomerDAOImpl();
-            ArrayList<Customer> allCustomers = customerDAO.getAllCustomers();
+            ArrayList<Customer> allCustomers = customerDAO.getAll();
             ArrayList<CustomerTM> allCustomersForTable = new ArrayList<>();
 
             for (Customer customer : allCustomers) {
@@ -123,7 +124,7 @@ public class ManageCustomerFormController implements Initializable {
             try {
                 /*Delete operation*/
 //                CustomerDAO customerDAO = new CustomerDAOImpl();
-                boolean b = customerDAO.deleteCustomer(customerID);
+                boolean b = customerDAO.delete(customerID);
 
                 if (b) {
                     loadAllCustomers();
@@ -160,7 +161,7 @@ public class ManageCustomerFormController implements Initializable {
             try {
                 /* Add Operation*/
 //                CustomerDAO dao = new CustomerDAOImpl();
-                boolean b = customerDAO.addCustomer(new Customer(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
+                boolean b = customerDAO.add(new Customer(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
                 if (b) {
                     loadAllCustomers();
                 } else {
@@ -174,7 +175,7 @@ public class ManageCustomerFormController implements Initializable {
             try {
                 //Update Operation
 //                CustomerDAO dao = new CustomerDAOImpl();
-                boolean b = customerDAO.updateCustomer(new Customer(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
+                boolean b = customerDAO.update(new Customer(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
                 if (b) {
                     loadAllCustomers();
                 } else {

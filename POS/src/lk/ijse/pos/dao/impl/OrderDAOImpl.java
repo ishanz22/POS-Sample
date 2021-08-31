@@ -6,6 +6,7 @@ import lk.ijse.pos.db.DBConnection;
 import lk.ijse.pos.model.Orders;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 /**
@@ -14,29 +15,54 @@ import java.util.ArrayList;
  **/
 
 public class OrderDAOImpl implements OrderDAO {
-    Connection connection = DBConnection.getInstance().getConnection();
+    @Override
+    public boolean add(Orders orders) throws Exception {
+        return CrudUtil.executeUpdate("INSERT INTO Orders VALUES (?,?,?)");
 
-    public OrderDAOImpl() throws Exception {
     }
 
-    public boolean addOrder(Orders orders) throws Exception {
-return CrudUtil.executeUpdate("INSERT INTO Orders VALUES (?,?,?)");
+
+
+    @Override
+    public boolean delete(String s) throws Exception {
+        throw new UnsupportedOperationException("not yet");
     }
 
-    public boolean deleteOrder() {
-        throw new UnsupportedOperationException("This feature is not supported yet");
+    @Override
+    public boolean update(Orders orders) throws Exception {
+        throw new UnsupportedOperationException("not yet");
     }
 
-    public boolean updateOrder() {
-        throw new UnsupportedOperationException("This feature is not supported yet");
+    @Override
+    public Orders search(String s) throws Exception {
+        throw new UnsupportedOperationException("not yet");
     }
 
-    public Orders searchOrder() {
-        throw new UnsupportedOperationException("This feature is not supported yet");
+    @Override
+    public ArrayList<Orders> getAll() throws Exception {
+        throw new UnsupportedOperationException("not yet");
     }
 
-    public ArrayList<Orders> getAllOrders() {
-        throw new UnsupportedOperationException("This feature is not supported yet");
-    }
+
+//
+//    public boolean addOrder(Orders orders) throws Exception {
+//return CrudUtil.executeUpdate("INSERT INTO Orders VALUES (?,?,?)");
+//    }
+//
+//    public boolean deleteOrder() {
+//        throw new UnsupportedOperationException("This feature is not supported yet");
+//    }
+//
+//    public boolean updateOrder() {
+//        throw new UnsupportedOperationException("This feature is not supported yet");
+//    }
+//
+//    public Orders searchOrder() {
+//        throw new UnsupportedOperationException("This feature is not supported yet");
+//    }
+//
+//    public ArrayList<Orders> getAllOrders() {
+//        throw new UnsupportedOperationException("This feature is not supported yet");
+//    }
 
 }
