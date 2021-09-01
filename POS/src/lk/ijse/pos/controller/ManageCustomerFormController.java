@@ -16,11 +16,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.pos.AppInitializer;
-import lk.ijse.pos.BO.CustomerBOImpl;
-import lk.ijse.pos.dao.CustomerDAO;
-import lk.ijse.pos.dao.impl.CustomerDAOImpl;
-import lk.ijse.pos.model.Customer;
+import lk.ijse.pos.bo.BOFactory;
+import lk.ijse.pos.bo.custom.CustomerBO;
+import lk.ijse.pos.dto.CustomerDTO;
+import lk.ijse.pos.entity.Customer;
 import lk.ijse.pos.view.tblmodel.CustomerTM;
+
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -48,21 +49,20 @@ public class ManageCustomerFormController implements Initializable {
     @FXML
     private TableView<CustomerTM> tblCustomers;
 
-    CustomerBOImpl customerBO = new CustomerBOImpl();
-
+    CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     private void loadAllCustomers() {
+
         try {
             /*  get all customers*/
-//            CustomerDAO customerDAO = new CustomerDAOImpl();
-            ArrayList<Customer> allCustomers = customerBO.getAllCustomers();
+            ArrayList<CustomerDTO> allCustomers = customerBO.getAllCustomers();
             ArrayList<CustomerTM> allCustomersForTable = new ArrayList<>();
 
-            for (Customer customer : allCustomers) {
-                allCustomersForTable.add(new CustomerTM(customer.getcID(), customer.getName(), customer.getAddress()));
+            for (CustomerDTO customer : allCustomers) {
+                allCustomersForTable.add(new CustomerTM(customer.getId(), customer.getName(), customer.getAddress()));
             }
-            ObservableList<CustomerTM> olCustomers = FXCollections.observableArrayList(allCustomersForTable);
-            tblCustomers.setItems(olCustomers);
+            ObservableList<CustomerTM> obList = FXCollections.observableArrayList(allCustomersForTable);
+            tblCustomers.setItems(obList);
 
 
         } catch (Exception e) {
@@ -120,10 +120,9 @@ public class ManageCustomerFormController implements Initializable {
 
             try {
                 /*Delete operation*/
-//                CustomerDAO customerDAO = new CustomerDAOImpl();
-                boolean b = customerBO.deleteCustomer(customerID);
+                boolean idDelete = customerBO.deleteCustomer(customerID);
 
-                if (b) {
+                if (idDelete) {
                     loadAllCustomers();
                 } else {
                     Alert a = new Alert(Alert.AlertType.ERROR, "Failed to delete the customer", ButtonType.OK);
@@ -132,9 +131,7 @@ public class ManageCustomerFormController implements Initializable {
             } catch (Exception ex) {
                 Logger.getLogger(ManageCustomerFormController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
-
     }
 
     private void clearTextFields() {
@@ -157,9 +154,8 @@ public class ManageCustomerFormController implements Initializable {
         if (addnew) {
             try {
                 /* Add Operation*/
-//                CustomerDAO dao = new CustomerDAOImpl();
-                boolean b = customerBO.AddCustomer(new Customer(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
-                if (b) {
+                boolean isSaved = customerBO.addCustomer(new CustomerDTO(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
+                if (isSaved) {
                     loadAllCustomers();
                 } else {
                     new Alert(Alert.AlertType.ERROR, "Unable to add new customer", ButtonType.OK).show();
@@ -171,20 +167,16 @@ public class ManageCustomerFormController implements Initializable {
         } else {
             try {
                 //Update Operation
-//                CustomerDAO dao = new CustomerDAOImpl();
-                boolean b = customerBO.updateCustomer(new Customer(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
-                if (b) {
+                boolean isUpdated = customerBO.updateCustomer(new CustomerDTO(txtCustomerId.getText(), txtCustomerName.getText(), txtCustomerAddress.getText()));
+                if (isUpdated) {
                     loadAllCustomers();
                 } else {
                     new Alert(Alert.AlertType.ERROR, "Unable to update the customer", ButtonType.OK).show();
                 }
 
-
             } catch (Exception ex) {
                 Logger.getLogger(ManageCustomerFormController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
     }
-
 }
